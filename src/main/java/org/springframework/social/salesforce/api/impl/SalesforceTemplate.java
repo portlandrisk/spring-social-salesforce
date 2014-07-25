@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Default implementation of Salesforce. This is the main entry point for all
  * the operations that can be performed on Salesforce.
- * 
+ *
  * @author Umut Utkan
  */
 public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Salesforce {
@@ -41,6 +41,8 @@ public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Sale
     private RecentOperations recentOperations;
 
     private SearchOperations searchOperations;
+
+    private InvoiceItOperations invoiceItOperations;
 
     private SObjectOperations sObjectsOperations;
 
@@ -85,6 +87,11 @@ public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Sale
     }
 
     @Override
+    public InvoiceItOperations invoiceItOperations() {
+        return invoiceItOperations;
+    }
+
+    @Override
     public SObjectOperations sObjectsOperations() {
         return sObjectsOperations;
     }
@@ -96,6 +103,7 @@ public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Sale
         recentOperations = new RecentTemplate(this, getRestTemplate());
         searchOperations = new SearchTemplate(this, getRestTemplate());
         sObjectsOperations = new SObjectsTemplate(this, getRestTemplate());
+        invoiceItOperations = new InvoiceItOrderTemplate(this, getRestTemplate());
     }
 
     //@Override
