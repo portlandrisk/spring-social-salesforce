@@ -4,7 +4,7 @@
 
     <groupId>org.springframework.social</groupId>
     <artifactId>spring-social-salesforce</artifactId>
-    <version>1.2.6-encompass</version>
+    <version>1.2.7-encompass</version>
     <packaging>jar</packaging>
 
     <name>spring-social-salesforce</name>

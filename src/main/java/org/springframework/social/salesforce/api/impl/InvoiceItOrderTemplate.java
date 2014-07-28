@@ -1,11 +1,13 @@
-package org.springframework.social.salesforce.api;
+package org.springframework.social.salesforce.api.impl;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.social.salesforce.api.impl.AbstractSalesForceOperations;
+import org.springframework.social.salesforce.api.InvoiceItOperations;
+import org.springframework.social.salesforce.api.Salesforce;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public class InvoiceItOrderTemplate extends AbstractSalesForceOperations<Salesforce> implements InvoiceItOperations {
@@ -25,10 +27,13 @@ public class InvoiceItOrderTemplate extends AbstractSalesForceOperations<Salesfo
         requireAuthorization();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<Map> entity = new HttpEntity<Map>(fields, headers);
 
-        return restTemplate.postForObject(api.getBaseUrl() + INVOICE_IT_ORDERS_API_URI, entity, Map.class);
+        return restTemplate.postForObject(api.getInstanceUrl() + INVOICE_IT_ORDERS_API_URI, entity, Map.class);
     }
 
-
+    public RestTemplate getRestTemplate() {
+        return restTemplate;
+    }
 }
