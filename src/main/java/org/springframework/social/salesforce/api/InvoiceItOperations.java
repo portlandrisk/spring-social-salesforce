@@ -4,7 +4,6 @@ import java.util.Map;
 
 public interface InvoiceItOperations {
 
-//    public Map<String, Object> createOrder(Map<String, Object> fields);
-    public Object createOrder(Map<String, Object> fields);
+    public Map<String, Object> createOrder(Map<String, Object> fields);
 
 }
