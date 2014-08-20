@@ -34,6 +34,8 @@ public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Sale
 
     private ApiOperations apiOperations;
 
+    private ApexRestOperations apexRestOperations;
+
     private ChatterOperations chatterOperations;
 
     private QueryOperations queryOperations;
@@ -64,6 +66,11 @@ public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Sale
     @Override
     public ApiOperations apiOperations() {
         return apiOperations;
+    }
+
+    @Override
+    public ApexRestOperations apexRestOperations() {
+        return apexRestOperations;
     }
 
     @Override
@@ -98,6 +105,7 @@ public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Sale
 
     private void initialize() {
         apiOperations = new ApiTemplate(this, getRestTemplate());
+        apexRestOperations = new ApexRestTemplate(this, getRestTemplate());
         chatterOperations = new ChatterTemplate(this, getRestTemplate());
         queryOperations = new QueryTemplate(this, getRestTemplate());
         recentOperations = new RecentTemplate(this, getRestTemplate());
