@@ -15,6 +15,8 @@ public interface Salesforce extends ApiBinding {
 
     public ApiOperations apiOperations();
 
+    public ApexRestOperations apexRestOperations();
+
     public ChatterOperations chatterOperations();
 
     public QueryOperations queryOperations();
