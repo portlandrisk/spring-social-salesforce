@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -32,6 +33,28 @@ public class ApexRestTemplate extends AbstractSalesForceOperations<Salesforce> i
         Assert.notNull(resultType, "Result type must not be null");
 
         URI uri = URIBuilder.fromUri(api.getInstanceUrl() + APEX_REST_PATH + resource + PATH_SEPARATOR + identifier).build();
+        return restTemplate.getForObject(uri, resultType);
+    }
+
+    @Override
+    public <T> T get(String resource, Map<String, String> parameters, Class<T> resultType) {
+        Assert.isTrue(isNotBlank(resource), "Resource must not be blank");
+        Assert.notNull(resultType, "Result type must not be null");
+
+        URIBuilder uriBuilder = URIBuilder.
+                fromUri(api.getInstanceUrl() + APEX_REST_PATH + resource);
+
+        if (parameters != null) {
+            for (String key : parameters.keySet()) {
+                String value = parameters.get(key);
+                if (isNotBlank(key) && isNotBlank(value)) {
+                    uriBuilder.queryParam(key, value);
+                }
+            }
+
+        }
+        URI uri = uriBuilder.build();
+
         return restTemplate.getForObject(uri, resultType);
     }
 
