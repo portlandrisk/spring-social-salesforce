@@ -1,10 +1,10 @@
 package org.springframework.social.salesforce.api;
 
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.social.ApiException;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Encapsulates the error response sent by salesforce.
@@ -24,14 +24,14 @@ public class SalesforceRequestException extends ApiException {
     private final String code;
 
     public SalesforceRequestException(String message) {
-        super(message);
+        super(Salesforce.PROVIDER_ID, message);
         this.code = null;
         this.fields = null;
     }
 
     @SuppressWarnings("unchecked")
     public SalesforceRequestException(Map<String, Object> errorDetails) {
-        super((String)errorDetails.get("message"));
+        super(Salesforce.PROVIDER_ID, (String)errorDetails.get("message"));
 
         this.code = StringUtils.defaultString((String)errorDetails.get("errorCode"), "UNKNOWN");
         this.fields = (List<String>) errorDetails.get("fields");

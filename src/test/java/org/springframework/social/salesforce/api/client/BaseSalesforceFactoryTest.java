@@ -11,7 +11,9 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.social.test.client.RequestMatchers.*;
+import static org.springframework.social.test.client.RequestMatchers.body;
+import static org.springframework.social.test.client.RequestMatchers.method;
+import static org.springframework.social.test.client.RequestMatchers.requestTo;
 import static org.springframework.social.test.client.ResponseCreators.withResponse;
 
 /**

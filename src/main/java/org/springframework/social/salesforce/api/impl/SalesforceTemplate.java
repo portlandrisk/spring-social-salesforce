@@ -1,12 +1,13 @@
 package org.springframework.social.salesforce.api.impl;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.type.CollectionType;
-import org.codehaus.jackson.map.type.TypeFactory;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.social.UncategorizedApiException;
 import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;
 import org.springframework.social.oauth2.OAuth2Version;
@@ -115,11 +116,10 @@ public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Sale
     }
 
     //@Override
-    protected MappingJacksonHttpMessageConverter getJsonMessageConverter() {
-        //TODO Back rev'd
-        //MappingJacksonHttpMessageConverter converter = super.getJsonMessageConverter();
-        MappingJacksonHttpMessageConverter converter = new MappingJacksonHttpMessageConverter();
+    protected MappingJackson2HttpMessageConverter getJsonMessageConverter() {
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         objectMapper = new ObjectMapper();
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         objectMapper.registerModule(new SalesforceModule());
         converter.setObjectMapper(objectMapper);
         return converter;
@@ -134,18 +134,18 @@ public class SalesforceTemplate extends AbstractOAuth2ApiBinding implements Sale
     public <T> List<T> readList(JsonNode jsonNode, Class<T> type) {
         try {
             CollectionType listType = TypeFactory.defaultInstance().constructCollectionType(List.class, type);
-            return (List<T>) objectMapper.readValue(jsonNode, listType);
+            return (List<T>) objectMapper.readValue(jsonNode.traverse(), listType);
         } catch (IOException e) {
-            throw new UncategorizedApiException("Error deserializing data from Salesforce: " + e.getMessage(), e);
+            throw new UncategorizedApiException(Salesforce.PROVIDER_ID, "Error deserializing data from Salesforce: " + e.getMessage(), e);
         }
     }
 
     @Override
     public <T> T readObject(JsonNode jsonNode, Class<T> type) {
         try {
-            return (T) objectMapper.readValue(jsonNode, type);
+            return (T) objectMapper.readValue(jsonNode.traverse(), type);
         } catch (IOException e) {
-            throw new UncategorizedApiException("Error deserializing data from Salesforce: " + e.getMessage(), e);
+            throw new UncategorizedApiException(Salesforce.PROVIDER_ID, "Error deserializing data from Salesforce: " + e.getMessage(), e);
         }
     }
 
