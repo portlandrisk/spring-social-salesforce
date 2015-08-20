@@ -1,12 +1,12 @@
 package org.springframework.social.salesforce.api.impl;
 
-import org.codehaus.jackson.JsonEncoding;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.type.TypeFactory;
-import org.codehaus.jackson.type.JavaType;
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -45,7 +45,7 @@ public class InvoiceItHttpMessageConverter extends AbstractHttpMessageConverter<
      * Sets the {@code ObjectMapper} for this view. If not set, a default
      * {@link ObjectMapper#ObjectMapper() ObjectMapper} is used.
      * <p>Setting a custom-configured {@code ObjectMapper} is one way to take further control of the JSON serialization
-     * process. For example, an extended {@link org.codehaus.jackson.map.SerializerFactory} can be configured that provides
+     * process. For example, an extended {@link com.fasterxml.jackson.databind.ser.SerializerFactory} can be configured that provides
      * custom serializers for specific types. The other option for refining the serialization process is to use Jackson's
      * provided annotations on the types to be serialized, in which case a custom-configured ObjectMapper is unnecessary.
      */
@@ -73,7 +73,7 @@ public class InvoiceItHttpMessageConverter extends AbstractHttpMessageConverter<
     /**
      * Returns the Jackson {@link JavaType} for the specific class.
      * <p/>
-     * <p>Default implementation returns {@link org.codehaus.jackson.map.type.TypeFactory#type(java.lang.reflect.Type)}, but this can be overridden
+     * <p>Default implementation returns {@link TypeFactory#uncheckedSimpleType(Class)}}, but this can be overridden
      * in subclasses, to allow for custom generic collection handling. For instance:
      * <pre class="code">
      * protected JavaType getJavaType(Class&lt;?&gt; clazz) {
@@ -89,7 +89,7 @@ public class InvoiceItHttpMessageConverter extends AbstractHttpMessageConverter<
      * @return the java type
      */
     protected JavaType getJavaType(Class<?> clazz) {
-        return TypeFactory.type(clazz);
+        return TypeFactory.defaultInstance().uncheckedSimpleType(clazz);
     }
 
     @Override
